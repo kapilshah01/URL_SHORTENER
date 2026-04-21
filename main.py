@@ -50,7 +50,7 @@ def shorten_url(request: URLRequest):
     short_id = generate_id()
     url_db[short_id] = request.long_url
     save_data(url_db)
-    return {"short_url": f"http://127.0.0.1:8000/{short_id}"}
+    return {"short_url": f"{request.base_url}{short_id}"}
 
 @app.get("/{short_id}")
 def redirect_url(short_id: str):
