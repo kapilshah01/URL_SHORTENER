@@ -1,7 +1,7 @@
 from fastapi import FastAPI  #framework...
 #this is the import used for redirecting the user's url to another shorter url 
 from fastapi.responses import RedirectResponse 
-from fastapi.responses import HTMLResponse
+
 #random letters :)  ID which helps to remember and redirect when url is given ...
 import string
 import random
@@ -50,16 +50,10 @@ def shorten_url(request: URLRequest):
     short_id = generate_id()
     url_db[short_id] = request.long_url
     save_data(url_db)
-    return {"short_url": f"{request.base_url}{short_id}"}
+    return {"short_url": f"http://127.0.0.1:8000/{short_id}"}
 
 @app.get("/{short_id}")
 def redirect_url(short_id: str):
     if short_id in url_db:
         return RedirectResponse(url_db[short_id])
     return {"error": "URL not found"}
-
-
-@app.get("/app", response_class=HTMLResponse)
-def website():
-    with open("index.html") as f:
-        return f.read()
