@@ -1,4 +1,4 @@
-from fastapi import FastAPI  #framework...
+from fastapi import FastAPI, Request  #framework...
 #this is the import used for redirecting the user's url to another shorter url 
 from fastapi.responses import RedirectResponse 
 
@@ -46,9 +46,9 @@ def home():
     return {"message": "URL Shortener API Running"}
 
 @app.post("/shorten")
-def shorten_url(request: URLRequest):
+def shorten_url(data: URLRequest, request: Request):
     short_id = generate_id()
-    url_db[short_id] = request.long_url
+    url_db[short_id] = data.long_url
     save_data(url_db)
     return {"short_url": f"{request.base_url}{short_id}"}
 
